@@ -7,7 +7,7 @@ import com.mp.blog.permission.vo.MenuList;
 import java.util.List;
 
 /**
- * @author Administrator
+ * @author mapei
  * @date 2020-07-09 15:07:08
  **/
 public interface UserRoleService extends BaseService<UserRole,Long> {

@@ -2,6 +2,10 @@ package com.mp.blog.permission.service;
 
 import com.mp.blog.common.base.service.BaseService;
 import com.mp.blog.permission.entity.RoleMenu;
+import com.mp.blog.permission.vo.MenuList;
+import io.swagger.models.auth.In;
+
+import java.util.List;
 
 /**
  * @author Administrator
@@ -9,4 +13,10 @@ import com.mp.blog.permission.entity.RoleMenu;
  **/
 public interface RoleMenuService extends BaseService<RoleMenu,Long> {
 
+    /**
+     * 根据Uid查询拥有的menu
+     * @param userId
+     * @return
+     */
+    List<MenuList> findMenuByUid(Integer userId);
 }

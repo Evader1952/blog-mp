@@ -31,9 +31,6 @@ public class UserRoleServiceImpl extends BaseMybatisServiceImpl<UserRole, Long> 
     @Autowired
     private RoleMenuService roleMenuService;
 
-    @Autowired
-    private MenuService menuService;
-
     @Override
     protected BaseMapper<UserRole, Long> getBaseMapper() {
         return userRoleMapper;
@@ -41,28 +38,7 @@ public class UserRoleServiceImpl extends BaseMybatisServiceImpl<UserRole, Long> 
 
     @Override
     public List<MenuList> findPermissionByUid(Integer userId) {
-        //根据userId查询对应的Menu
-        UserRole userRole = UserRole.builder().userId(userId).build();
-        List<UserRole> userRoles = this.queryList(userRole);
-        //所有的菜单
-        HashSet<RoleMenu> menus = new HashSet<>();
-        for (UserRole ur : userRoles) {
-            Integer roleId = ur.getRoleId();
-            //根据角色id查询对应的权限
-            RoleMenu query = RoleMenu.builder().roleId(roleId).state(RoleMenu.State.open.getCode()).build();
-            List<RoleMenu> menu = roleMenuService.queryList(query);
-            for (RoleMenu roleMenu : menu) {
-                menus.add(roleMenu);
-            }
-        }
-        List<String> strings = new ArrayList<>();
-        Iterator it = menus.iterator();
-        while (it.hasNext()) {
-            RoleMenu next = (RoleMenu) it.next();
-            strings.add(next.getMenuId());
-        }
-        List<MenuList> allMenus = menuService.queryByIdIn(strings).stream().
-                sorted(Comparator.comparing(MenuList::getType)).collect(Collectors.toList());
+        List<MenuList> allMenus = roleMenuService.findMenuByUid(userId);
         List<MenuList> menuLists = new ArrayList<>();
         Map<String, MenuList> menuMap = new HashMap<>(allMenus.size());
         for (MenuList menu : allMenus) {
