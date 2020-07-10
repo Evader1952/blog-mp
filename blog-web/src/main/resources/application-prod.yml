@@ -1,0 +1,61 @@
+spring:
+  datasource:
+    username: root
+    password: duchong5262
+    url: jdbc:mysql://121.196.57.4:33306/pay?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      web-stat-filter:
+        enabled: true
+        url-pattern: '/*'
+        exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
+        session-stat-enable: true
+      stat-view-servlet:
+        url-pattern: '/druid/*'
+        reset-enable: false
+        login-username: dcpay
+        login-password: dcpay666
+        enabled: true
+      filter:
+        stat:
+          slow-sql-millis: 5000
+  redis:
+    host: 121.196.57.4
+    port: 36379
+    password: duchong5262
+    timeout: 3000ms
+    database: 6
+    lettuce:
+      pool:
+        max-wait: 2000ms
+        min-idle: 50
+        max-idle: 100
+        max-active: 200
+
+activemq: #MQ消息中间件
+  broker-url: failover:(tcp://121.196.57.4:31616)
+  user: admin
+  password: duchong5262
+  enabled: true
+  max-connections: 50
+  expiry-timeout: 10000
+  idle-timeout: 30000
+
+#H5页面和后台地址
+server:
+  api: http://127.0.0.1:8088
+
+

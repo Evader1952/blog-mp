@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mp.blog.permission.mapper.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.mp.blog.permission.entity.Role">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="type" property="type" jdbcType="INTEGER"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+            <result column="remark" property="remark" jdbcType="VARCHAR"/>
+            <result column="state" property="state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="table">role</sql>
+    <sql id="Base_Column_List">
+            `id`,
+            `type`,
+            `name`,
+            `remark`,
+            `state`
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                    <if test="id != null">
+                        AND `id`=#{id}
+                    </if>
+                    <if test="type != null">
+                        AND `type`=#{type}
+                    </if>
+                    <if test="name != null and name != ''">
+                        AND `name`=#{name}
+                    </if>
+                    <if test="remark != null and remark != ''">
+                        AND `remark`=#{remark}
+                    </if>
+                    <if test="state != null">
+                        AND `state`=#{state}
+                    </if>
+            </trim>
+        </where>
+        <if test="offset == null and limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </sql>
+
+    <!-- 查询总数 -->
+    <select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(id)
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询 -->
+    <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+    </select>
+
+    <insert id="insert" parameterType="com.mp.blog.permission.entity.Role" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `type`,
+            `name`,
+            `remark`,
+            `state`
+        )
+        VALUES(
+            #{id},
+            #{type},
+            #{name},
+            #{remark},
+            #{state}
+        )
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `type`,
+            `name`,
+            `remark`,
+            `state`
+        )
+        VALUES
+        <foreach collection="list" item="cm" index="index" separator=",">
+            (
+            #{cm.id},
+            #{cm.type},
+            #{cm.name},
+            #{cm.remark},
+            #{cm.state}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </select>
+
+    <update id="updateById" parameterType="com.mp.blog.permission.entity.Role">
+        UPDATE
+        <include refid="table"/>
+        <set>
+            <if test="type != null">
+                 `type`=#{type},
+            </if>
+            <if test="name != null and name != ''">
+                 `name`=#{name},
+            </if>
+            <if test="remark != null and remark != ''">
+                 `remark`=#{remark},
+            </if>
+            <if test="state != null">
+                 `state`=#{state},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </delete>
+</mapper>
