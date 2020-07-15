@@ -1,13 +1,11 @@
 package com.mp.blog.permission.service.impl;
 
-import com.mp.blog.common.base.dao.mybatis.BaseMapper;
-import com.mp.blog.common.base.service.impl.BaseMybatisServiceImpl;
-import com.mp.blog.common.utils.DataUtils;
-import com.mp.blog.permission.entity.Menu;
-import com.mp.blog.permission.entity.RoleMenu;
+
+import com.mp.blog.common.dao.mybatis.BaseMapper;
+import com.mp.blog.common.service.impl.BaseMybatisServiceImpl;
+import com.mp.blog.common.utils.DataUtil;
 import com.mp.blog.permission.entity.UserRole;
 import com.mp.blog.permission.mapper.UserRoleMapper;
-import com.mp.blog.permission.service.MenuService;
 import com.mp.blog.permission.service.RoleMenuService;
 import com.mp.blog.permission.service.UserRoleService;
 import com.mp.blog.permission.vo.MenuList;
@@ -15,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 
 /**
  * @author Administrator
@@ -46,14 +43,13 @@ public class UserRoleServiceImpl extends BaseMybatisServiceImpl<UserRole, Long> 
         }
         for (MenuList menu : allMenus) {
             MenuList child = menu;
-            if (DataUtils.isEmpty(child.getParentId())) {
+            if (DataUtil.isEmpty(child.getParentId())) {
                 menuLists.add(menu);
             } else {
                 MenuList parent = menuMap.get(child.getParentId().toString());
                 parent.getSubmenus().add(child);
             }
         }
-
         return menuLists;
     }
 }

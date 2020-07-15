@@ -1,4 +1,4 @@
-package com.mp.blog.common.redis;
+package com.mp.blog.common.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
@@ -15,9 +14,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.nio.charset.Charset;
 
 /**
- * @author duchong
+ * @author tuchuan
  * @description
- * @date 2020-7-1 11:23:49
+ * @date 2019/3/13 17:13
  */
 @Configuration
 public class RedisConfig {
@@ -41,14 +40,6 @@ public class RedisConfig {
         template.afterPropertiesSet();
         return template;
     }
-
-    @Bean
-    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory) {
-        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        return container;
-    }
-
 
     public static class FastJsonRedisSerializer<T> implements RedisSerializer<T> {
         private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");

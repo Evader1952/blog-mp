@@ -1,12 +1,10 @@
 package com.mp.blog.permission.controller;
 
 
-import com.mp.blog.common.base.controller.BaseController;
-import com.mp.blog.common.model.Response;
-import com.mp.blog.common.utils.DataUtils;
-import com.mp.blog.permission.entity.Menu;
-import com.mp.blog.permission.entity.UserRole;
-import com.mp.blog.permission.service.RoleService;
+
+import com.mp.blog.common.common.Response;
+import com.mp.blog.common.controller.BaseController;
+import com.mp.blog.common.utils.DataUtil;
 import com.mp.blog.permission.service.UserRoleService;
 import com.mp.blog.permission.vo.MenuList;
 import io.swagger.annotations.Api;
@@ -43,8 +41,8 @@ public class PermissionWebController extends BaseController {
     @ResponseBody
     public Response<List<MenuList>> list() {
         List<MenuList> list = userRoleService.findPermissionByUid(1);
-        if (DataUtils.isEmpty(list)){
-            return Response.unsigned("没有权限");
+        if (DataUtil.isEmpty(list)){
+            return Response.fail("没有权限");
         }
         return Response.ok(list);
     }
