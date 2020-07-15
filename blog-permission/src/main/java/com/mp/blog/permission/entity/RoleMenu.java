@@ -1,6 +1,6 @@
 package com.mp.blog.permission.entity;
 
-import com.mp.blog.common.model.Identifiable;
+import com.mp.blog.common.entity.Identifiable;
 import lombok.Builder;
 import lombok.Data;
 

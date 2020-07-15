@@ -1,6 +1,6 @@
 package com.mp.blog.permission.service;
 
-import com.mp.blog.common.base.service.BaseService;
+import com.mp.blog.common.service.BaseService;
 import com.mp.blog.permission.entity.User;
 
 /**
@@ -9,4 +9,5 @@ import com.mp.blog.permission.entity.User;
  **/
 public interface UserService extends BaseService<User,Long> {
 
+    User findByUsername(String username);
 }

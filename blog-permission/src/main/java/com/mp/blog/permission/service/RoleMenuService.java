@@ -1,6 +1,6 @@
 package com.mp.blog.permission.service;
 
-import com.mp.blog.common.base.service.BaseService;
+import com.mp.blog.common.service.BaseService;
 import com.mp.blog.permission.entity.RoleMenu;
 import com.mp.blog.permission.vo.MenuList;
 import io.swagger.models.auth.In;

@@ -11,9 +11,9 @@ public class Main {
     public static void main(String[] args) {
         String basePack = Main.class.getPackage().getName();
         CodeGenerator codeGenerator = new CodeGenerator();
-        codeGenerator.generateMybatisXml(basePack, UserRole.class);
-        codeGenerator.generateDao(basePack, UserRole.class);
-        codeGenerator.generateService(basePack, UserRole.class);
+        codeGenerator.generateMybatisXml(basePack, Role.class);
+        codeGenerator.generateDao(basePack, Role.class);
+        codeGenerator.generateService(basePack, Role.class);
         codeGenerator.generateCreateSqlForPackage(basePack);
     }
 }

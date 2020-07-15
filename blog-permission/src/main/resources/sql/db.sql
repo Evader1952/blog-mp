@@ -18,7 +18,6 @@ CREATE TABLE `menu` (
 
 CREATE TABLE `role` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
-    `type` int(11) DEFAULT NULL,
     `name` varchar(255) DEFAULT NULL,
     `remark` varchar(255) DEFAULT NULL,
     `state` int(11) DEFAULT NULL,
@@ -54,7 +53,7 @@ CREATE TABLE `user` (
 
 CREATE TABLE `user_role` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
-    `user_id` varchar(255) DEFAULT NULL,
+    `user_id` int(11) DEFAULT NULL,
     `role_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

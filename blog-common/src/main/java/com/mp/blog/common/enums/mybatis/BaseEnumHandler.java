@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * @author lvlu
  * @date 2019-05-15 14:10
  **/
-public class BaseEnumHandler<T extends BaseEnum<Integer>> extends BaseTypeHandler<T> {
+public class BaseEnumHandler<T extends BaseEnum> extends BaseTypeHandler<T> {
     private Class<T> xclazz;
     private Method valuesMethod;
 
@@ -31,7 +31,7 @@ public class BaseEnumHandler<T extends BaseEnum<Integer>> extends BaseTypeHandle
 
     private T convertToEnum(Integer code) {
         try {
-            if (code == null) {
+            if(code == null){
                 return null;
             }
             T[] values = (T[]) valuesMethod.invoke(null);

@@ -1,7 +1,7 @@
 package com.mp.blog.permission.service.impl;
 
-import com.mp.blog.common.base.dao.mybatis.BaseMapper;
-import com.mp.blog.common.base.service.impl.BaseMybatisServiceImpl;
+import com.mp.blog.common.dao.mybatis.BaseMapper;
+import com.mp.blog.common.service.impl.BaseMybatisServiceImpl;
 import com.mp.blog.permission.entity.RoleMenu;
 import com.mp.blog.permission.entity.UserRole;
 import com.mp.blog.permission.mapper.RoleMenuMapper;
@@ -12,7 +12,6 @@ import com.mp.blog.permission.vo.MenuList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.management.MemoryUsage;
 import java.util.*;
 import java.util.stream.Collectors;
 

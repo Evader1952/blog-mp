@@ -1,8 +1,13 @@
-package com.mp.blog.common.utils;
+package com.mp.blog.common.utils;/**
+ * Created by lvlu on 2018/1/15.
+ */
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import org.springframework.util.Assert;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,59 +17,24 @@ import java.util.regex.Pattern;
  * @author lvlu
  * @date 2018-01-15 10:13
  **/
-public class StringUtils extends org.apache.commons.lang.StringUtils {
+public class StringUtils {
 
-    static Pattern NUMBERIC_PATTERN = Pattern.compile("^[0-9]+(.[0-9]+)?$");
+    private static final Pattern BLANKPATTERN = Pattern.compile("\\s*|\t|\r|\n");
 
-    /**
-     * 判断字符串是否为数字
-     *
-     * @param str
-     * @return
-     */
-    public static boolean isNumeric(String str) {
-
-        Matcher isNum = NUMBERIC_PATTERN.matcher(str);
-        if (!isNum.matches()) {
-            return false;
+    public static String replaceBlank(String str) {
+        String dest = "";
+        if (str != null) {
+            Matcher m = BLANKPATTERN.matcher(str);
+            dest = m.replaceAll("");
         }
-        return true;
-    }
-
-    public static boolean validMobile(String mobile){
-        return mobile.matches("^1(3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9])\\d{8}$");
-    }
-
-
-    public static boolean isChinese(char c){
-        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
-        if(ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
-                ||ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
-                ||ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
-                ||ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
-                ||ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
-                ||ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
-                ){
-            return true;
-        }
-
-        return false;
-    }
-    public static boolean isChinese(String str){
-        char[] ch =  str.toCharArray();
-        for (char c : ch) {
-            if(isChinese(c)){
-                return true;
-            }
-        }
-        return false;
+        return dest;
     }
 
     /**
      * 判断字符串中是否含有中文
      */
     public static boolean isCNChar(String s) {
-        if (DataUtils.isEmpty(s)) return false;
+        if (DataUtil.isEmpty(s)) return false;
         boolean booleanValue = false;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
@@ -101,34 +71,12 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
     }
 
     /**
-     * 获取商户号
-     */
-    public static String getCaOpenId() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("CAOPENID");
-        sb.append(sdf.format(new Date()));
-        sb.append(createRandom(true, 6));
-        return sb.toString();
-    }
-
-    /**
      * 获取平台ID
      */
     public static String getAppId() {
         StringBuffer sb = new StringBuffer();
         sb.append(sdf.format(new Date()));
         sb.append(stringToAscii("x"));
-        sb.append(createRandom(true, 4));
-        return sb.toString();
-    }
-
-    /**
-     * 获取平台ID
-     */
-    public static String getQrCodeNo() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("QR");
-        sb.append(sdf.format(new Date()));
         sb.append(createRandom(true, 4));
         return sb.toString();
     }
@@ -145,77 +93,6 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
             sbu.append((int) chars[i]);
         }
         return sbu.toString();
-    }
-
-
-    /**
-     * 交易单号创建
-     */
-    public static String getTradeNo() {
-        return System.currentTimeMillis() + createRandom(true, 8);
-    }
-
-
-    /**
-     * 创建指定位数的随机数
-     *
-     * @param numberFlag 是否为纯数字
-     * @param length     随机字符串长度
-     */
-    public static String createRandom(boolean numberFlag, int length) {
-        String retStr = "";
-        String strTable = numberFlag ? "1234567890" : "1234567890abcdefghijkmnpqrstuvwxyz";
-        int len = strTable.length();
-        boolean bDone = true;
-
-        do {
-            retStr = "";
-            int count = 0;
-
-            for (int i = 0; i < length; ++i) {
-                double dblR = Math.random() * (double) len;
-                int intR = (int) Math.floor(dblR);
-                char c = strTable.charAt(intR);
-                if ('0' <= c && c <= '9') {
-                    ++count;
-                }
-
-                retStr = retStr + strTable.charAt(intR);
-            }
-
-            if (count >= 2) {
-                bDone = false;
-            }
-        } while (bDone);
-
-        return retStr;
-    }
-
-    /**
-     * 创建指定位数的随机字符串
-     */
-    public static String createRandomStr() {
-        String retStr = "";
-        String strTable = "1234567890";
-        String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        Random random = new Random();
-        for (int i = 0; i <= 5; i++) {
-            if (i <= 2) {
-                retStr += str.charAt(random.nextInt(str.length()));
-            } else {
-                retStr += strTable.charAt(random.nextInt(strTable.length()));
-            }
-        }
-        return retStr;
-    }
-
-    /**
-     * 去掉字符串里的空格
-     *
-     * @param str
-     */
-    public static String trim(String str) {
-        return str == null ? null : str.trim();
     }
 
     /**
@@ -271,28 +148,101 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
         }
     }
 
-    public static String getMethodName(String method) {
-        String[] arr = method.split("\\.");
-        StringBuffer sb = new StringBuffer();
-                for (int i = 0; i < arr.length; i++) {
-                    String s = arr[i];
-                    if (i > 0) {
-                        sb.append(upperCaseFirst(s));
-                    } else {
-                        sb.append(s);
+
+    /**
+     * 交易单号创建
+     */
+    public static String getTradeNo() {
+        return System.currentTimeMillis() + createRandom(true, 8);
+    }
+
+    public static String createRandom(boolean numberFlag, int length) {
+        String retStr = "";
+        String strTable = numberFlag ? "1234567890" : "1234567890abcdefghijkmnpqrstuvwxyz";
+        int len = strTable.length();
+        boolean bDone = true;
+
+        do {
+            retStr = "";
+            int count = 0;
+
+            for (int i = 0; i < length; ++i) {
+                double dblR = Math.random() * (double) len;
+                int intR = (int) Math.floor(dblR);
+                char c = strTable.charAt(intR);
+                if ('0' <= c && c <= '9') {
+                    ++count;
+                }
+
+                retStr = retStr + strTable.charAt(intR);
             }
+
+            if (count >= 2) {
+                bDone = false;
+            }
+        } while (bDone);
+
+        return retStr;
+    }
+
+    public static String trim(String str) {
+        return str == null ? null : str.trim();
+    }
+
+
+    public static String substringAfter(Object target, String substr) {
+        Assert.notNull(target, "Cannot apply substringAfter on null");
+        Assert.notNull(substr, "Parameter substring cannot be null");
+        String str = target.toString();
+        int index = str.indexOf(substr);
+        return index < 0 ? null : new String(str.substring(index + substr.length()));
+    }
+
+
+    /**
+     * 支付结果中的支付渠道格式化
+     *
+     * @param channels
+     */
+    public static String getChannels(String channels) {
+        JSONArray array = JSONArray.parseArray(channels);
+        if (DataUtil.isEmpty(array)) {
+            return "";
         }
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < array.size(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            if (!object.containsKey("fundChannel")) {
+                continue;
+            }
+            sb.append(object.get("fundChannel"));
+            sb.append(",");
+        }
+
+        return sb.substring(0, sb.length() - 1);
+    }
+
+    /**
+     * 获取商户账号
+     * @return
+     */
+    public static String getUserName() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("HB");
+        sb.append(createRandom(true, 8));
         return sb.toString();
     }
 
-    static String upperCaseFirst(String str) {
-        char[] ch = str.toCharArray();
-        if (ch[0] >= 'a' && ch[0] <= 'z') {
-            ch[0] = (char) (ch[0] - 32);
-        }
-        return new String(ch);
+    /**
+     * 获取电子签章用户OPENID
+     */
+    public static String getCaOpenId() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("CAOPENIDHB");
+        sb.append(sdf.format(new Date()));
+        sb.append(createRandom(true, 6));
+        return sb.toString();
     }
-
     public static String hiddenName(String name) {
         if (name == null || "".equals(name)) {
             return name;
@@ -333,21 +283,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
         return new_name.toString();
     }
 
-    public static String hiddenTradeNo(String tradeNo) {
-        if (tradeNo == null || "".equals(tradeNo)) {
-            return tradeNo;
-        }
-        int length = tradeNo.length();
-        if (length < 7) {
-            return tradeNo;
-        }
-        int hiddenLength = length - 7;
-        StringBuffer newTrade = new StringBuffer();
-        newTrade.append(tradeNo.substring(0, 3));
-        for (int i = 0; i < hiddenLength; i++) {
-            newTrade.append("*");
-        }
-        newTrade.append(tradeNo.substring(length - 4));
-        return newTrade.toString();
+    public static void main(String[] args) {
+        System.out.println(StringUtils.getUserName());
     }
 }
+

@@ -64,4 +64,20 @@ mybatis:
 
 h5:
   key: 12345678qwertyui
-excelDownloadUrl: http://127.0.0.1:8088/downloadExcel/
+
+
+
+excelDownloadUrl: http://127.0.0.1:8888/api/open/downloadExcel/
+zipDownloadUrl: http://127.0.0.1:8888/api/open/downloadZip/
+
+
+
+#文件下载存放路径
+serverPath: C:\\excel\\
+
+sms:
+  gms:
+    url: http://gmsgateway
+    orgid: 12345
+    username: 12345
+    password: 12345678

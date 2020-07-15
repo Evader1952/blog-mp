@@ -1,6 +1,6 @@
 package com.mp.blog.permission.entity;
 
-import com.mp.blog.common.model.Identifiable;
+import com.mp.blog.common.entity.Identifiable;
 import lombok.Data;
 
 
@@ -9,7 +9,6 @@ public class Role implements Identifiable<Long> {
 
     private Long id;
 
-    private Integer type;
 
     private String name;
 

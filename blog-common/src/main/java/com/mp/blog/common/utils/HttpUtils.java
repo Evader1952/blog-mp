@@ -1,113 +1,135 @@
 package com.mp.blog.common.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+
 /**
- * 初始
- *
- * @author duchong
- * @date 2019-06-11 9:41
+ * @author lvlu
+ * @date 2019-03-05 18:56
  **/
+@Slf4j
 public class HttpUtils {
 
-    /**
-     * http请求socket连接超时时间,毫秒为单位
-     */
-    static final int HTTP_SOCKET_TIMEOUT = 30000;
+    private static final int TIMEOUT = 5000;
 
-    /**
-     * http请求连接超时时间,毫秒为单位
-     */
-    static final int HTTP_CONNECT_TIMEOUT = 30000;
-
-    static RestTemplate template;
-
-    static {
-        template = new RestTemplate(getClientHttpRequestFactory());
-    }
-
-    /**
-     * 配置HttpClient超时时间
-     *
-     * @return
-     */
-    static ClientHttpRequestFactory getClientHttpRequestFactory() {
-        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(HTTP_SOCKET_TIMEOUT)
-                .setConnectTimeout(HTTP_CONNECT_TIMEOUT).build();
-        CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
-        return new HttpComponentsClientHttpRequestFactory(client);
-    }
-
-    /**
-     * 推送异步通知
-     *
-     * @param params
-     * @param url
-     */
-    public static String sendPost(Map<String, String> params, String url) {
-        MultiValueMap<String, Object> postParameters = new LinkedMultiValueMap<>();
-        for (String key : params.keySet()) {
-            postParameters.add(key, params.get(key));
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        HttpEntity<MultiValueMap<String, Object>> r = new HttpEntity<>(postParameters, headers);
-        String result = template.postForObject(url, r, String.class);
-        return result;
-    }
-
-    /**
-     * 获取请求里的参数
-     *
-     * @param request
-     * @return
-     */
-    public static Map<String, String> getRequestParams(HttpServletRequest request) {
-        Map<String, String> map = new HashMap<>();
-        Enumeration request_BodyNames = request.getParameterNames();
-        while (request_BodyNames.hasMoreElements()) {
-            String name = (String) request_BodyNames.nextElement();
-            String value = request.getParameter(name);
-            map.put(name, value);
-        }
-        return map;
-    }
-
-    /**
-     * 获取请求里的参数
-     *
-     * @param request
-     * @return
-     */
-    public static Map<String, String> getParams(HttpServletRequest request) {
-        Map<String, String> params = new HashMap<String, String>();
-        Map requestParams = request.getParameterMap();
-        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
-            String name = (String) iter.next();
-            String[] values = (String[]) requestParams.get(name);
-            String valueStr = "";
-            for (int i = 0; i < values.length; i++) {
-                valueStr = (i == values.length - 1) ? valueStr + values[i]
-                        : valueStr + values[i] + ",";
+    public static String doGet(String url) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(TIMEOUT)
+                .setConnectionRequestTimeout(TIMEOUT)
+                .setSocketTimeout(TIMEOUT)
+                .setRedirectsEnabled(true)
+                .build();
+        HttpGet request = new HttpGet(url);
+        request.setConfig(requestConfig);
+        try {
+            HttpResponse response = httpClient.execute(request);
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                String strResult = EntityUtils.toString(response.getEntity());
+                return strResult;
             }
-            params.put(name, valueStr);
         }
-        return params;
+        catch (IOException e) {
+            log.error("HttpGet ERROR,The Exception Is:{}",e);
+        }finally {
+            if(null != httpClient){
+                try {
+                    httpClient.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static String doPost(String url, Map<String, String> paramsMap){
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        RequestConfig requestConfig = RequestConfig.custom().
+                setConnectTimeout(180 * 1000).setConnectionRequestTimeout(180 * 1000)
+                .setSocketTimeout(180 * 1000).setRedirectsEnabled(true).build();
+        httpPost.setConfig(requestConfig);
+
+        List<NameValuePair> nvps = new ArrayList<>();
+        for (String key : paramsMap.keySet()) {
+            nvps.add(new BasicNameValuePair(key, String.valueOf(paramsMap.get(key))));
+        }
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+            log.info("httpPost ===**********===>>> " + EntityUtils.toString(httpPost.getEntity()));
+            HttpResponse response = httpClient.execute(httpPost);
+            String strResult;
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                strResult = EntityUtils.toString(response.getEntity());
+                return strResult;
+            }
+        } catch (Exception e) {
+            log.error("HttpPost ERROR,The Exception Is:{}",e);
+        }finally {
+            if(null != httpClient){
+                try {
+                    httpClient.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String doPost(String url, String jsonStr){
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        RequestConfig requestConfig = RequestConfig.custom().
+                setConnectTimeout(180 * 1000).setConnectionRequestTimeout(180 * 1000)
+                .setSocketTimeout(180 * 1000).setRedirectsEnabled(true).build();
+        httpPost.setConfig(requestConfig);
+
+        List<NameValuePair> nvps = new ArrayList<>();
+        JSONObject object = JSON.parseObject(jsonStr);
+        for (String key : object.keySet()) {
+            nvps.add(new BasicNameValuePair(key, String.valueOf(object.get(key))));
+        }
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps, "UTF-8"));
+            log.info("httpPost ===**********===>>> " + EntityUtils.toString(httpPost.getEntity()));
+            HttpResponse response = httpClient.execute(httpPost);
+            String strResult;
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                strResult = EntityUtils.toString(response.getEntity());
+                return strResult;
+            }
+        } catch (Exception e) {
+            log.error("HttpPost ERROR,The Exception Is:{}",e);
+        }finally {
+            if(null != httpClient){
+                try {
+                    httpClient.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 }

@@ -3,7 +3,6 @@
 <mapper namespace="com.mp.blog.permission.mapper.RoleMapper">
     <resultMap id="BaseResultMap" type="com.mp.blog.permission.entity.Role">
             <id column="id" property="id" jdbcType="BIGINT"/>
-            <result column="type" property="type" jdbcType="INTEGER"/>
             <result column="name" property="name" jdbcType="VARCHAR"/>
             <result column="remark" property="remark" jdbcType="VARCHAR"/>
             <result column="state" property="state" jdbcType="INTEGER"/>
@@ -12,7 +11,6 @@
     <sql id="table">role</sql>
     <sql id="Base_Column_List">
             `id`,
-            `type`,
             `name`,
             `remark`,
             `state`
@@ -22,9 +20,6 @@
             <trim prefixOverrides="and">
                     <if test="id != null">
                         AND `id`=#{id}
-                    </if>
-                    <if test="type != null">
-                        AND `type`=#{type}
                     </if>
                     <if test="name != null and name != ''">
                         AND `name`=#{name}
@@ -76,14 +71,12 @@
         <include refid="table"/>
         (
             `id`,
-            `type`,
             `name`,
             `remark`,
             `state`
         )
         VALUES(
             #{id},
-            #{type},
             #{name},
             #{remark},
             #{state}
@@ -95,7 +88,6 @@
         <include refid="table"/>
         (
             `id`,
-            `type`,
             `name`,
             `remark`,
             `state`
@@ -104,7 +96,6 @@
         <foreach collection="list" item="cm" index="index" separator=",">
             (
             #{cm.id},
-            #{cm.type},
             #{cm.name},
             #{cm.remark},
             #{cm.state}
@@ -124,9 +115,6 @@
         UPDATE
         <include refid="table"/>
         <set>
-            <if test="type != null">
-                 `type`=#{type},
-            </if>
             <if test="name != null and name != ''">
                  `name`=#{name},
             </if>

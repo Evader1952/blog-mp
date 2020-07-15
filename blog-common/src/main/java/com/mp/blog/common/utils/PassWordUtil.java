@@ -78,11 +78,6 @@ public class PassWordUtil {
     }
 
     public static void main(String[] args) {
-        String salt = "adfdfb28093e645d";
-        System.out.println(salt);
-        String pwd = "chaiyan123456";
-        System.err.println(pwd);
-        String ePwd = generatePasswordSha1WithSalt(pwd, salt);
-        System.out.println(ePwd);
+        System.out.println(generateSalt(8));
     }
 }

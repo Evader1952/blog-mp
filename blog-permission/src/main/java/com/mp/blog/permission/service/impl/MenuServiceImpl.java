@@ -1,7 +1,7 @@
 package com.mp.blog.permission.service.impl;
 
-import com.mp.blog.common.base.dao.mybatis.BaseMapper;
-import com.mp.blog.common.base.service.impl.BaseMybatisServiceImpl;
+import com.mp.blog.common.dao.mybatis.BaseMapper;
+import com.mp.blog.common.service.impl.BaseMybatisServiceImpl;
 import com.mp.blog.permission.entity.Menu;
 import com.mp.blog.permission.mapper.MenuMapper;
 import com.mp.blog.permission.service.MenuService;

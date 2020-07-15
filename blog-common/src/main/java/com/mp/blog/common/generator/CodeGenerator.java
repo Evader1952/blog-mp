@@ -114,7 +114,7 @@ public class CodeGenerator {
         cfg.setClassForTemplateLoading(CodeGenerator.class, "/template/");
         Template temp = null;
         try {
-            temp = cfg.getTemplate("daoTemplate_zh_CN.ftl");
+            temp = cfg.getTemplate("daoTemplate.ftl");
             File docFile = new File(baseDir + "\\mapper\\" + className + "Mapper.java");
             Writer docout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(docFile)));
             //输出文件
@@ -166,7 +166,6 @@ public class CodeGenerator {
     }
 
     public void generateCreateSqlForPackage(String basePack) {
-        basePack = basePack + ".entity";
         String root = Thread.currentThread().getContextClassLoader().getResource("./").getPath().replace("/target/classes/", "/");
         String baseDir = root.substring(1) + "\\src\\main\\resources\\sql\\";
         Map<String, Object> rootMap = new HashMap<String, Object>();

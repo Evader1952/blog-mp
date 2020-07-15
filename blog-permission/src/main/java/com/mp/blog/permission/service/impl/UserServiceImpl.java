@@ -1,7 +1,7 @@
 package com.mp.blog.permission.service.impl;
 
-import com.mp.blog.common.base.dao.mybatis.BaseMapper;
-import com.mp.blog.common.base.service.impl.BaseMybatisServiceImpl;
+import com.mp.blog.common.dao.mybatis.BaseMapper;
+import com.mp.blog.common.service.impl.BaseMybatisServiceImpl;
 import com.mp.blog.permission.entity.User;
 import com.mp.blog.permission.mapper.UserMapper;
 import com.mp.blog.permission.service.UserService;
@@ -22,5 +22,10 @@ public class UserServiceImpl extends BaseMybatisServiceImpl<User,Long> implement
     @Override
     protected BaseMapper<User, Long> getBaseMapper() {
         return userMapper;
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return null;
     }
 }
