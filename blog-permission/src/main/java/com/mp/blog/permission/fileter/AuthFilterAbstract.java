@@ -4,6 +4,7 @@ import com.mp.blog.permission.service.TokenStoreResolver;
 import com.mp.blog.permission.service.UserPermissionResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * @description
  * @date 2019/3/15 10:50
  */
+@Component
 @WebFilter(urlPatterns = "/*")
 public class AuthFilterAbstract extends JwtAuthenticationFilter {
 
@@ -41,7 +43,7 @@ public class AuthFilterAbstract extends JwtAuthenticationFilter {
 
     @Override
     protected Boolean isLoginUrl(HttpServletRequest request) {
-        return pathMatcher.match("/web/user/login", request.getServletPath());
+        return pathMatcher.match("/api/web/user/login", request.getServletPath());
     }
 
     @Override
@@ -51,8 +53,10 @@ public class AuthFilterAbstract extends JwtAuthenticationFilter {
 
     @Override
     protected boolean isProtectedUrl(HttpServletRequest request) {
-        return pathMatcher.match("/web/**", request.getServletPath())
-                && !pathMatcher.match("/web/user/login", request.getServletPath());
+        return pathMatcher.match("/api/**", request.getServletPath())
+                && !pathMatcher.match("/api/open/**", request.getServletPath())
+                && !pathMatcher.match("/api/web/user/login", request.getServletPath());
     }
+
 
 }

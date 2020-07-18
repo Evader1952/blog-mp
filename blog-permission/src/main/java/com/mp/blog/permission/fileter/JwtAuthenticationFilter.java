@@ -50,7 +50,7 @@ public abstract class JwtAuthenticationFilter extends OncePerRequestFilter {
                     requestUser.setType(user.getType());
                     RequestContext.setCurrentUser(requestUser);
                     if (!isLogoutUrl(request)) {
-                        JwtUtil.refreshAndAddTokenToResponseHeader(request, response, user.getUserId(), user.getUsername(), getTokenStoreResolver());
+                        JwtUtil.refreshAndAddTokenToResponseHeader(request, response, String.valueOf(user.getUserId()), user.getUsername(), getTokenStoreResolver());
                     }
                 }
             } catch (UserPermissionResolver.AuthenticationException e) {

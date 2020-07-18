@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mp.blog.shopping.mapper.TradeMapper">
+    <resultMap id="BaseResultMap" type="com.mp.blog.shopping.entity.Trade">
+            <id column="id" property="id" jdbcType="BIGINT"/>
+            <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>
+            <result column="goods_type" property="goodsType" jdbcType="INTEGER"/>
+            <result column="amount" property="amount" jdbcType="VARCHAR"/>
+            <result column="payment_amount" property="paymentAmount" jdbcType="VARCHAR"/>
+            <result column="rebate_amount" property="rebateAmount" jdbcType="VARCHAR"/>
+            <result column="remark" property="remark" jdbcType="VARCHAR"/>
+            <result column="buy_way" property="buyWay" jdbcType="INTEGER"/>
+            <result column="biz_type" property="bizType" jdbcType="INTEGER"/>
+            <result column="type" property="type" jdbcType="INTEGER"/>
+            <result column="state" property="state" jdbcType="INTEGER"/>
+            <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="table">trade</sql>
+    <sql id="Base_Column_List">
+            `id`,
+            `goods_name`,
+            `goods_type`,
+            `amount`,
+            `payment_amount`,
+            `rebate_amount`,
+            `remark`,
+            `buy_way`,
+            `biz_type`,
+            `type`,
+            `state`,
+            `create_time`
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                    <if test="id != null">
+                        AND `id`=#{id}
+                    </if>
+                    <if test="goodsName != null and goodsName != ''">
+                        AND `goods_name`=#{goodsName}
+                    </if>
+                    <if test="goodsType != null">
+                        AND `goods_type`=#{goodsType}
+                    </if>
+                    <if test="amount != null and amount != ''">
+                        AND `amount`=#{amount}
+                    </if>
+                    <if test="paymentAmount != null and paymentAmount != ''">
+                        AND `payment_amount`=#{paymentAmount}
+                    </if>
+                    <if test="rebateAmount != null and rebateAmount != ''">
+                        AND `rebate_amount`=#{rebateAmount}
+                    </if>
+                    <if test="remark != null and remark != ''">
+                        AND `remark`=#{remark}
+                    </if>
+                    <if test="buyWay != null">
+                        AND `buy_way`=#{buyWay}
+                    </if>
+                    <if test="bizType != null">
+                        AND `biz_type`=#{bizType}
+                    </if>
+                    <if test="type != null">
+                        AND `type`=#{type}
+                    </if>
+                    <if test="state != null">
+                        AND `state`=#{state}
+                    </if>
+                    <if test="createTime != null">
+                        AND `create_time`=#{createTime}
+                    </if>
+            </trim>
+        </where>
+        <if test="offset == null and limit != null">
+            limit #{limit}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </sql>
+
+    <!-- 查询总数 -->
+    <select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(id)
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询 -->
+    <select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <!-- 查询所有 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+    </select>
+
+    <insert id="insert" parameterType="com.mp.blog.shopping.entity.Trade" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `goods_name`,
+            `goods_type`,
+            `amount`,
+            `payment_amount`,
+            `rebate_amount`,
+            `remark`,
+            `buy_way`,
+            `biz_type`,
+            `type`,
+            `state`,
+            `create_time`
+        )
+        VALUES(
+            #{id},
+            #{goodsName},
+            #{goodsType},
+            #{amount},
+            #{paymentAmount},
+            #{rebateAmount},
+            #{remark},
+            #{buyWay},
+            #{bizType},
+            #{type},
+            #{state},
+            now()
+        )
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="table"/>
+        (
+            `id`,
+            `goods_name`,
+            `goods_type`,
+            `amount`,
+            `payment_amount`,
+            `rebate_amount`,
+            `remark`,
+            `buy_way`,
+            `biz_type`,
+            `type`,
+            `state`,
+            `create_time`
+        )
+        VALUES
+        <foreach collection="list" item="cm" index="index" separator=",">
+            (
+            #{cm.id},
+            #{cm.goodsName},
+            #{cm.goodsType},
+            #{cm.amount},
+            #{cm.paymentAmount},
+            #{cm.rebateAmount},
+            #{cm.remark},
+            #{cm.buyWay},
+            #{cm.bizType},
+            #{cm.type},
+            #{cm.state},
+            now()
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </select>
+
+    <update id="updateById" parameterType="com.mp.blog.shopping.entity.Trade">
+        UPDATE
+        <include refid="table"/>
+        <set>
+            <if test="goodsName != null and goodsName != ''">
+                 `goods_name`=#{goodsName},
+            </if>
+            <if test="goodsType != null">
+                 `goods_type`=#{goodsType},
+            </if>
+            <if test="amount != null and amount != ''">
+                 `amount`=#{amount},
+            </if>
+            <if test="paymentAmount != null and paymentAmount != ''">
+                 `payment_amount`=#{paymentAmount},
+            </if>
+            <if test="rebateAmount != null and rebateAmount != ''">
+                 `rebate_amount`=#{rebateAmount},
+            </if>
+            <if test="remark != null and remark != ''">
+                 `remark`=#{remark},
+            </if>
+            <if test="buyWay != null">
+                 `buy_way`=#{buyWay},
+            </if>
+            <if test="bizType != null">
+                 `biz_type`=#{bizType},
+            </if>
+            <if test="type != null">
+                 `type`=#{type},
+            </if>
+            <if test="state != null">
+                 `state`=#{state},
+            </if>
+            <if test="createTime != null">
+                 `create_time`=#{createTime},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        <include refid="table"/>
+        WHERE id=#{id}
+    </delete>
+</mapper>

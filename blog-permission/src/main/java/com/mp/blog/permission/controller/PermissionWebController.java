@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Api(description = "权限web接口")
 @RestController
-@RequestMapping(value = "/api/web/permission")
+@RequestMapping(value = "api/web/permission")
 public class PermissionWebController extends BaseController {
 
     @Autowired
@@ -37,10 +37,10 @@ public class PermissionWebController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "authorization", value = "加密参数", required = true, dataType = "String", paramType = "header"),
     })
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     public Response<List<MenuList>> list() {
-        List<MenuList> list = userRoleService.findPermissionByUid(1);
+        List<MenuList> list = userRoleService.findPermissionByUid(1L);
         if (DataUtil.isEmpty(list)){
             return Response.fail("没有权限");
         }

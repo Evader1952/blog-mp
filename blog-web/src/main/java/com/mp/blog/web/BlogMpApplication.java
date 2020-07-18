@@ -7,12 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 
-/**
- * 支付主程序入口
- *
- * @author mp
- * @date 2019-7-24 16:49:03
- */
+
 @ComponentScan(value = {"com.mp.blog"})
 @MapperScan(value = {"com.mp.blog.*.mapper"})
 @ServletComponentScan(basePackages = {"com.mp.blog.permission.filter"})

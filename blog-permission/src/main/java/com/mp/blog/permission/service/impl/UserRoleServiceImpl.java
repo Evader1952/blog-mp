@@ -34,7 +34,7 @@ public class UserRoleServiceImpl extends BaseMybatisServiceImpl<UserRole, Long> 
     }
 
     @Override
-    public List<MenuList> findPermissionByUid(Integer userId) {
+    public List<MenuList> findPermissionByUid(Long userId) {
         List<MenuList> allMenus = roleMenuService.findMenuByUid(userId);
         List<MenuList> menuLists = new ArrayList<>();
         Map<String, MenuList> menuMap = new HashMap<>(allMenus.size());
@@ -51,5 +51,10 @@ public class UserRoleServiceImpl extends BaseMybatisServiceImpl<UserRole, Long> 
             }
         }
         return menuLists;
+    }
+
+    @Override
+    public void deleteByUid(Long id) {
+        userRoleMapper.deleteById(id);
     }
 }

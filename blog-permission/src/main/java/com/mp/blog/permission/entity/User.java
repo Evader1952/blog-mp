@@ -15,15 +15,14 @@ public class User implements Identifiable<Long> {
 
     private Long id;
 
-    private String uid;
 
     private String username;
 
     private String password;
 
-    private String mobile;
+    private String salt;
 
-    private String nickName;
+    private String pwd;
 
     private Date createTime;
 
@@ -31,9 +30,6 @@ public class User implements Identifiable<Long> {
 
     private Integer type;
 
-    private String salt;
-
-    private String pwd;
     /**
      * 备注
      */

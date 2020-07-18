@@ -60,6 +60,7 @@
         <include refid="table"/>
     </select>
 
+
     <insert id="insert" parameterType="com.mp.blog.permission.entity.UserRole" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO

@@ -8,4 +8,5 @@ public interface BaseEnum {
 
     Integer getCode();
 
+
 }

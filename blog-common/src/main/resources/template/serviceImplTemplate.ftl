@@ -1,7 +1,7 @@
 package ${package}.service.impl;
 
-import ${commonPack}.base.dao.mybatis.BaseMapper;
-import ${commonPack}.base.service.impl.BaseMybatisServiceImpl;
+import ${commonPack}.dao.mybatis.BaseMapper;
+import ${commonPack}.service.impl.BaseMybatisServiceImpl;
 import ${fullClassName};
 import ${package}.mapper.${className?cap_first}Mapper;
 import ${package}.service.${className?cap_first}Service;

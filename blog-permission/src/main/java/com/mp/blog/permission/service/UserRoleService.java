@@ -18,5 +18,7 @@ public interface UserRoleService extends BaseService<UserRole,Long> {
      * @param userId
      * @return
      */
-    List<MenuList> findPermissionByUid(Integer userId);
+    List<MenuList> findPermissionByUid(Long userId);
+
+    void deleteByUid(Long id);
 }

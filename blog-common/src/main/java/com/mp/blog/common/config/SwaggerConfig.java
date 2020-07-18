@@ -24,7 +24,7 @@ public class SwaggerConfig {
     @Bean
     public Docket platformApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
-                .apis(RequestHandlerSelectors.basePackage("com.zanclick"))
+                .apis(RequestHandlerSelectors.basePackage("com.mp"))
                 .paths(PathSelectors.any())
                 .build()
                 .directModelSubstitute(Date.class,String.class)
@@ -34,7 +34,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title("API")
-                .description("©2019 Copyright. Powered By ZanClick.Tech")
+                .description("©2020 Copyright. Powered By Mp")
                 .version("1.0").build();
     }
 }

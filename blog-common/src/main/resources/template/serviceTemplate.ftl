@@ -1,6 +1,6 @@
 package ${package}.service;
 
-import ${commonPack}.base.service.BaseService;
+import ${commonPack}.service.BaseService;
 import ${fullClassName};
 
 /**

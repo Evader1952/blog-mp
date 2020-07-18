@@ -1,10 +1,16 @@
 package com.mp.blog.permission.entity;
 
 import com.mp.blog.common.entity.Identifiable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role implements Identifiable<Long> {
 
     private Long id;

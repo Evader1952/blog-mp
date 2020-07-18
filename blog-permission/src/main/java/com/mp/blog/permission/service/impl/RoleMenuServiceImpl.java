@@ -35,14 +35,14 @@ public class RoleMenuServiceImpl extends BaseMybatisServiceImpl<RoleMenu,Long> i
     }
 
     @Override
-    public List<MenuList> findMenuByUid(Integer userId) {
+    public List<MenuList> findMenuByUid(Long userId) {
         //根据userId查询对应的Menu
         UserRole userRole = UserRole.builder().userId(userId).build();
         List<UserRole> userRoles = userRoleService.queryList(userRole);
         //所有的菜单
         HashSet<RoleMenu> menus = new HashSet<>();
         for (UserRole ur : userRoles) {
-            Integer roleId = ur.getRoleId();
+            Long roleId = ur.getRoleId();
             //根据角色id查询对应的权限
             RoleMenu query = RoleMenu.builder().roleId(roleId).state(RoleMenu.State.open.getCode()).build();
             List<RoleMenu> menu = this.queryList(query);
@@ -54,7 +54,7 @@ public class RoleMenuServiceImpl extends BaseMybatisServiceImpl<RoleMenu,Long> i
         Iterator it = menus.iterator();
         while (it.hasNext()) {
             RoleMenu next = (RoleMenu) it.next();
-            strings.add(next.getMenuId());
+            strings.add(String.valueOf(next.getMenuId()));
         }
         List<MenuList> allMenus = menuService.queryByIdIn(strings).stream().
                 sorted(Comparator.comparing(MenuList::getType)).collect(Collectors.toList());

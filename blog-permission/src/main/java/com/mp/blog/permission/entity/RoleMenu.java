@@ -1,8 +1,10 @@
 package com.mp.blog.permission.entity;
 
 import com.mp.blog.common.entity.Identifiable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
@@ -13,14 +15,16 @@ import java.util.Objects;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoleMenu implements Identifiable<Long> {
 
     private Long id;
 
-    private Integer roleId;
+    private Long roleId;
 
 
-    private String menuId;
+    private Long menuId;
 
     private Integer state;
 

@@ -18,5 +18,5 @@ public interface RoleMenuService extends BaseService<RoleMenu,Long> {
      * @param userId
      * @return
      */
-    List<MenuList> findMenuByUid(Integer userId);
+    List<MenuList> findMenuByUid(Long userId);
 }

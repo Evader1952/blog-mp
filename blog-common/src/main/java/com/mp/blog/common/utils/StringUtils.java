@@ -284,7 +284,7 @@ public class StringUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(StringUtils.getUserName());
+        System.out.println(System.currentTimeMillis());
     }
 }
 

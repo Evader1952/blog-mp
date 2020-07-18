@@ -1,0 +1,6 @@
+
+
+CREATE TABLE `main` (
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

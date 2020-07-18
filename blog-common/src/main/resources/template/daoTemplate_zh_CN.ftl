@@ -1,6 +1,6 @@
 package ${package}.mapper;
 
-import ${commonPack}.base.dao.mybatis.BaseMapper;
+import ${commonPack}.dao.mybatis.BaseMapper;
 import ${fullClassName};
 import org.apache.ibatis.annotations.Mapper;
 

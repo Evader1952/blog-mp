@@ -52,11 +52,10 @@ public class MyUserPermissionResolver extends UserPermissionResolver {
         if (user != null) {
             //TODO 状态判断
             LoginUser loginUser = new LoginUser();
-            loginUser.setUserId(String.valueOf(user.getId()));
+            loginUser.setUserId(user.getId());
             loginUser.setUsername(user.getUsername());
             loginUser.setPassword(user.getPassword());
             loginUser.setSalt(user.getSalt());
-
             loginUser.setState(user.getState());
             loginUser.setType(user.getType());
             return loginUser;
