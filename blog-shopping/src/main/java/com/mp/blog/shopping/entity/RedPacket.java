@@ -1,7 +1,11 @@
 package com.mp.blog.shopping.entity;
 
 import com.mp.blog.common.entity.Identifiable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
@@ -11,6 +15,9 @@ import java.util.Date;
  * @Date: 2020/7/18 14:47
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RedPacket implements Identifiable<Long> {
 
 
@@ -22,7 +29,7 @@ public class RedPacket implements Identifiable<Long> {
     private  String amount;
 
 
-    private  String way;
+    private  Integer buyWay;
     /**
      * 创建时间
      */

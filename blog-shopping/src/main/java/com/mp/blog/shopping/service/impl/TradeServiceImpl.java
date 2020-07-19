@@ -5,6 +5,7 @@ import com.mp.blog.common.utils.*;
 import com.mp.blog.common.dao.mybatis.BaseMapper;
 import com.mp.blog.common.service.impl.BaseMybatisServiceImpl;
 
+import com.mp.blog.shopping.entity.RedPacket;
 import com.mp.blog.shopping.entity.Trade;
 import com.mp.blog.shopping.enums.TradeBizTypeEnum;
 import com.mp.blog.shopping.enums.TradeBuyWayEnum;
@@ -12,6 +13,7 @@ import com.mp.blog.shopping.enums.TradeStateEnum;
 import com.mp.blog.shopping.enums.TradeTypeEnum;
 import com.mp.blog.shopping.mapper.TradeMapper;
 import com.mp.blog.shopping.query.TradeQuery;
+import com.mp.blog.shopping.service.RedPacketService;
 import com.mp.blog.shopping.service.TradeService;
 import com.mp.blog.shopping.vo.TradeWebList;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +40,8 @@ public class TradeServiceImpl extends BaseMybatisServiceImpl<Trade, Long> implem
     @Autowired
     private TradeMapper tradeMapper;
 
+    @Autowired
+    private RedPacketService redPacketService;
 
     @Override
     protected BaseMapper<Trade, Long> getBaseMapper() {
@@ -56,21 +61,37 @@ public class TradeServiceImpl extends BaseMybatisServiceImpl<Trade, Long> implem
         return voPage;
     }
 
+    private  static final Date date = new Date();
     @Override
     public Boolean addTrade(Trade trade) {
         Boolean flag = true;
+
         try {
-            if (trade.getType().equals("1")) {
+            if (trade.getType().equals(TradeTypeEnum.EXPENSES.toCode())) {
                 trade.setAmount("-" + trade.getAmount());
             }
             if (TradeBizTypeEnum.SWIPE.toCode().equals(trade.getBizType()) && TradeBuyWayEnum.TLP.toCode().equals(trade.getBuyWay())) {
-                trade.setAmount(MoneyUtil.subtract(trade.getAmount(), trade.getPaymentAmount()));
+               String rebateAmount= MoneyUtil.subtract(trade.getAmount(), trade.getPaymentAmount());
+                trade.setRebateAmount(rebateAmount);
+                 RedPacket redPacket = RedPacket.builder().amount(rebateAmount).buyWay(trade.getBuyWay()).createTime(date).build();
+                redPacketService.insert(redPacket);
             }
-
+            trade.setCreateTime(date);
             Trade insert = this.insert(trade);
         } catch (Exception e) {
             flag = false;
             log.error("添加trade失败{},{} ", JSONObject.toJSONString(trade), e.getMessage());
+        }
+        return flag;
+    }
+
+    @Override
+    public Boolean addOverhead(Trade trade) {
+        Boolean flag=true;
+        if (trade.getBizType().equals(TradeBizTypeEnum.OVERHEAD.toCode())){
+            this.insert(trade);
+        }else {
+            flag=false;
         }
         return flag;
     }

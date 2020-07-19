@@ -2,6 +2,7 @@ package com.mp.blog.shopping.entity;
 
 import com.mp.blog.common.entity.Identifiable;
 import com.mp.blog.common.entity.Param;
+import com.mp.blog.shopping.enums.TradeBizTypeEnum;
 import lombok.Data;
 
 import java.util.Date;
@@ -73,28 +74,31 @@ public class Trade  extends Param  implements Identifiable<Long>  {
     private Date createTime;
 
     public String check(){
-        if (checkNull(goodsName)){
+        if (checkNull(goodsName)) {
             return "请输入商品名称";
         }
-        if (checkNull(goodsType)){
+        if (checkNull(goodsType)) {
             return "请选择商品类型";
         }
-        if (checkNull(amount)){
+        if (checkNull(paymentAmount)) {
             return "请选择价格";
         }
-        if (checkNull(paymentAmount)){
-            return "请选择价格";
-        }
-        if (checkNull(buyWay)){
-            return "请选择购买渠道";
-        }
-        if (checkNull(bizType)){
-            return "请选择类型";
-        }
-        if (checkNull(type)){
-            return "请选择收支类型";
-        }
+        if (TradeBizTypeEnum.SWIPE.toCode().equals(bizType)) {
+            if (checkNull(amount)) {
+                return "请选择价格";
+            }
+            if (checkNull(buyWay)) {
+                return "请选择购买渠道";
+            }
+            if (checkNull(bizType)) {
+                return "请选择类型";
+            }
+            if (checkNull(type)) {
+                return "请选择收支类型";
+            }
+        }else if (TradeBizTypeEnum.OVERHEAD.toCode().equals(bizType)){
 
+        }
         return null;
     }
 }

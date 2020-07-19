@@ -7,20 +7,20 @@ public enum TradeStateEnum {
     /**
      *
      */
-    NOREBATE("待返佣", "0"),
-    REBATE("已返佣", "1");
+    NOREBATE("待返佣", 0),
+    REBATE("已返佣", 1);
 
-    private String code;
+    private Integer code;
     private String desc;
 
-    public String toCode(){
+    public Integer toCode(){
         return this.code;
     }
     public String toDesc(){
         return this.desc;
     }
 
-    TradeStateEnum(String desc, String code) {
+    TradeStateEnum(String desc, Integer code) {
         this.code = code;
         this.desc = desc;
     }

@@ -20,5 +20,15 @@ public interface TradeService extends BaseService<Trade,Long> {
      */
     Page<TradeWebList> findByPage(TradeQuery query);
 
+    /**
+     * 刷单
+     * @param trade
+     * @return
+     */
     Boolean addTrade(Trade trade);
+
+    /**
+     * 开销
+     */
+    Boolean addOverhead(Trade trade);
 }

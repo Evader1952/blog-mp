@@ -8,20 +8,20 @@ public enum TradeTypeEnum {
     /**
      * 0收入 1支出  收支
      */
-    INCOME("收入", "0"),
-    EXPENSES("支出", "1");
+    INCOME("收入", 0),
+    EXPENSES("支出", 1);
 
-    private String code;
+    private Integer code;
     private String desc;
 
-    public String toCode(){
+    public Integer toCode(){
         return this.code;
     }
     public String toDesc(){
         return this.desc;
     }
 
-    TradeTypeEnum(String desc, String code) {
+    TradeTypeEnum(String desc, Integer code) {
         this.code = code;
         this.desc = desc;
     }

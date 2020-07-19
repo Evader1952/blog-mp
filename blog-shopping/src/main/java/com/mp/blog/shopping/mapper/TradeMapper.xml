@@ -135,7 +135,7 @@
             #{bizType},
             #{type},
             #{state},
-            now()
+            #{cm.createTime}
         )
     </insert>
 
@@ -170,7 +170,7 @@
             #{cm.bizType},
             #{cm.type},
             #{cm.state},
-            now()
+            #{cm.createTime}
             )
         </foreach>
     </insert>
