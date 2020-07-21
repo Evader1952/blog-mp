@@ -3,8 +3,7 @@
 <mapper namespace="com.mp.blog.shopping.mapper.TradeMapper">
     <resultMap id="BaseResultMap" type="com.mp.blog.shopping.entity.Trade">
             <id column="id" property="id" jdbcType="BIGINT"/>
-            <result column="goods_name" property="goodsName" jdbcType="VARCHAR"/>
-            <result column="goods_type" property="goodsType" jdbcType="INTEGER"/>
+            <result column="title" property="title" jdbcType="VARCHAR"/>
             <result column="amount" property="amount" jdbcType="VARCHAR"/>
             <result column="payment_amount" property="paymentAmount" jdbcType="VARCHAR"/>
             <result column="rebate_amount" property="rebateAmount" jdbcType="VARCHAR"/>
@@ -12,15 +11,16 @@
             <result column="buy_way" property="buyWay" jdbcType="INTEGER"/>
             <result column="biz_type" property="bizType" jdbcType="INTEGER"/>
             <result column="type" property="type" jdbcType="INTEGER"/>
+            <result column="red_pack_state" property="redPackState" jdbcType="INTEGER"/>
             <result column="state" property="state" jdbcType="INTEGER"/>
             <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="uid" property="uid" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="table">trade</sql>
     <sql id="Base_Column_List">
             `id`,
-            `goods_name`,
-            `goods_type`,
+            `title`,
             `amount`,
             `payment_amount`,
             `rebate_amount`,
@@ -28,8 +28,10 @@
             `buy_way`,
             `biz_type`,
             `type`,
+            `red_pack_state`,
             `state`,
-            `create_time`
+            `create_time`,
+            `uid`
     </sql>
     <sql id="Base_Where_Clause">
         <where>
@@ -37,11 +39,8 @@
                     <if test="id != null">
                         AND `id`=#{id}
                     </if>
-                    <if test="goodsName != null and goodsName != ''">
-                        AND `goods_name`=#{goodsName}
-                    </if>
-                    <if test="goodsType != null">
-                        AND `goods_type`=#{goodsType}
+                    <if test="title != null and title != ''">
+                        AND `title`=#{title}
                     </if>
                     <if test="amount != null and amount != ''">
                         AND `amount`=#{amount}
@@ -64,11 +63,17 @@
                     <if test="type != null">
                         AND `type`=#{type}
                     </if>
+                    <if test="redPackState != null">
+                        AND `red_pack_state`=#{redPackState}
+                    </if>
                     <if test="state != null">
                         AND `state`=#{state}
                     </if>
                     <if test="createTime != null">
                         AND `create_time`=#{createTime}
+                    </if>
+                    <if test="uid != null">
+                        AND `uid`=#{uid}
                     </if>
             </trim>
         </where>
@@ -111,8 +116,7 @@
         <include refid="table"/>
         (
             `id`,
-            `goods_name`,
-            `goods_type`,
+            `title`,
             `amount`,
             `payment_amount`,
             `rebate_amount`,
@@ -120,13 +124,14 @@
             `buy_way`,
             `biz_type`,
             `type`,
+            `red_pack_state`,
             `state`,
-            `create_time`
+            `create_time`,
+            `uid`
         )
         VALUES(
             #{id},
-            #{goodsName},
-            #{goodsType},
+            #{title},
             #{amount},
             #{paymentAmount},
             #{rebateAmount},
@@ -134,8 +139,10 @@
             #{buyWay},
             #{bizType},
             #{type},
+            #{redPackState},
             #{state},
-            #{cm.createTime}
+            #{createTime},
+            #{uid}
         )
     </insert>
 
@@ -144,8 +151,7 @@
         <include refid="table"/>
         (
             `id`,
-            `goods_name`,
-            `goods_type`,
+            `title`,
             `amount`,
             `payment_amount`,
             `rebate_amount`,
@@ -153,15 +159,16 @@
             `buy_way`,
             `biz_type`,
             `type`,
+            `red_pack_state`,
             `state`,
-            `create_time`
+            `create_time`,
+            `uid`
         )
         VALUES
         <foreach collection="list" item="cm" index="index" separator=",">
             (
             #{cm.id},
-            #{cm.goodsName},
-            #{cm.goodsType},
+            #{cm.title},
             #{cm.amount},
             #{cm.paymentAmount},
             #{cm.rebateAmount},
@@ -169,8 +176,10 @@
             #{cm.buyWay},
             #{cm.bizType},
             #{cm.type},
+            #{cm.redPackState},
             #{cm.state},
-            #{cm.createTime}
+            #{cm.createTime},
+            #{cm.uid}
             )
         </foreach>
     </insert>
@@ -187,11 +196,8 @@
         UPDATE
         <include refid="table"/>
         <set>
-            <if test="goodsName != null and goodsName != ''">
-                 `goods_name`=#{goodsName},
-            </if>
-            <if test="goodsType != null">
-                 `goods_type`=#{goodsType},
+            <if test="title != null and title != ''">
+                 `title`=#{title},
             </if>
             <if test="amount != null and amount != ''">
                  `amount`=#{amount},
@@ -214,11 +220,17 @@
             <if test="type != null">
                  `type`=#{type},
             </if>
+            <if test="redPackState != null">
+                 `red_pack_state`=#{redPackState},
+            </if>
             <if test="state != null">
                  `state`=#{state},
             </if>
             <if test="createTime != null">
                  `create_time`=#{createTime},
+            </if>
+            <if test="uid != null">
+                 `uid`=#{uid},
             </if>
         </set>
         WHERE id=#{id}

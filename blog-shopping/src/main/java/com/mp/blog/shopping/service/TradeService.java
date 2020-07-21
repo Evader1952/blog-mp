@@ -4,6 +4,7 @@ import com.mp.blog.common.service.BaseService;
 import com.mp.blog.shopping.entity.Trade;
 import com.mp.blog.shopping.query.TradeQuery;
 import com.mp.blog.shopping.vo.TradeWebList;
+import io.swagger.models.auth.In;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -27,8 +28,5 @@ public interface TradeService extends BaseService<Trade,Long> {
      */
     Boolean addTrade(Trade trade);
 
-    /**
-     * 开销
-     */
-    Boolean addOverhead(Trade trade);
+    Boolean settle(Long id, Integer redPackState, Integer state, Integer type);
 }

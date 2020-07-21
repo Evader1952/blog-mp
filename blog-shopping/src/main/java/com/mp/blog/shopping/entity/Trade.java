@@ -3,7 +3,10 @@ package com.mp.blog.shopping.entity;
 import com.mp.blog.common.entity.Identifiable;
 import com.mp.blog.common.entity.Param;
 import com.mp.blog.shopping.enums.TradeBizTypeEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -12,21 +15,19 @@ import java.util.Date;
  * @Date: 2020/7/18 14:17
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Trade  extends Param  implements Identifiable<Long>  {
 
     private  Long id;
     /**
-     *商品名称
+     *收支简介
      */
-    private  String goodsName;
+    private  String title;
 
     /**
-     * 商品类型
-     */
-    private  Integer goodsType;
-
-    /**
-     * 商品价格
+     * 收支金额
      */
     private  String amount;
 
@@ -45,10 +46,8 @@ public class Trade  extends Param  implements Identifiable<Long>  {
      * 购买渠道
      * 0 淘宝
      * 1 京东
-     * 2 天猫
-     * 3 拼多多
-     * 4 淘礼品
-     * 5 线下商店
+     * 2 拼多多
+     * 3 淘礼品
      */
     private  Integer buyWay;
 
@@ -63,29 +62,39 @@ public class Trade  extends Param  implements Identifiable<Long>  {
      */
     private  Integer type;
     /**
-     * 状态
+     * 返佣状态
      * 0待返佣
      * 1已返佣
      */
+    private  Integer redPackState;
+
+    /**
+     * 0未结算
+     * 1已结算
+     */
     private  Integer state;
+
     /**
      * 创建时间
      */
     private Date createTime;
 
+    /**
+     * 创建人
+     * @return
+     */
+    private  Long uid;
+
     public String check(){
-        if (checkNull(goodsName)) {
-            return "请输入商品名称";
+        if (checkNull(title)) {
+            return "请输入备注（名称）";
         }
-        if (checkNull(goodsType)) {
-            return "请选择商品类型";
-        }
-        if (checkNull(paymentAmount)) {
+        if (checkNull(amount)) {
             return "请选择价格";
         }
         if (TradeBizTypeEnum.SWIPE.toCode().equals(bizType)) {
-            if (checkNull(amount)) {
-                return "请选择价格";
+            if (checkNull(paymentAmount)) {
+                return "请选择实付金额";
             }
             if (checkNull(buyWay)) {
                 return "请选择购买渠道";
@@ -93,12 +102,10 @@ public class Trade  extends Param  implements Identifiable<Long>  {
             if (checkNull(bizType)) {
                 return "请选择类型";
             }
-            if (checkNull(type)) {
-                return "请选择收支类型";
-            }
         }else if (TradeBizTypeEnum.OVERHEAD.toCode().equals(bizType)){
 
         }
         return null;
     }
+
 }

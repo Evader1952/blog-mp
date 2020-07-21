@@ -12,9 +12,9 @@ public class Main {
     public static void main(String[] args) {
         String basePack = Main.class.getPackage().getName();
         CodeGenerator codeGenerator = new CodeGenerator();
-        codeGenerator.generateMybatisXml(basePack, Trade.class);
-        codeGenerator.generateDao(basePack,Trade .class);
-        codeGenerator.generateService(basePack, Trade.class);
+        codeGenerator.generateMybatisXml(basePack, RedPacket.class);
+        codeGenerator.generateDao(basePack,RedPacket .class);
+        codeGenerator.generateService(basePack, RedPacket.class);
         codeGenerator.generateCreateSqlForPackage(basePack);
     }
 }

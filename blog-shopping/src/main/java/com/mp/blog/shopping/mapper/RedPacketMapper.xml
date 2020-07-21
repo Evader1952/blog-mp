@@ -4,16 +4,20 @@
     <resultMap id="BaseResultMap" type="com.mp.blog.shopping.entity.RedPacket">
             <id column="id" property="id" jdbcType="BIGINT"/>
             <result column="amount" property="amount" jdbcType="VARCHAR"/>
-            <result column="way" property="way" jdbcType="VARCHAR"/>
+            <result column="buy_way" property="buyWay" jdbcType="INTEGER"/>
+            <result column="state" property="state" jdbcType="INTEGER"/>
             <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+            <result column="tid" property="tid" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="table">red_packet</sql>
     <sql id="Base_Column_List">
             `id`,
             `amount`,
-            `way`,
-            `create_time`
+            `buy_way`,
+            `state`,
+            `create_time`,
+            `tid`
     </sql>
     <sql id="Base_Where_Clause">
         <where>
@@ -24,11 +28,17 @@
                     <if test="amount != null and amount != ''">
                         AND `amount`=#{amount}
                     </if>
-                    <if test="way != null and way != ''">
-                        AND `way`=#{way}
+                    <if test="buyWay != null">
+                        AND `buy_way`=#{buyWay}
+                    </if>
+                    <if test="state != null">
+                        AND `state`=#{state}
                     </if>
                     <if test="createTime != null">
                         AND `create_time`=#{createTime}
+                    </if>
+                    <if test="tid != null">
+                        AND `tid`=#{tid}
                     </if>
             </trim>
         </where>
@@ -72,14 +82,18 @@
         (
             `id`,
             `amount`,
-            `way`,
-            `create_time`
+            `buy_way`,
+            `state`,
+            `create_time`,
+            `tid`
         )
         VALUES(
             #{id},
             #{amount},
-            #{way},
-            #{createTime}
+            #{buyWay},
+            #{state},
+            #{createTime},
+            #{tid}
         )
     </insert>
 
@@ -89,16 +103,20 @@
         (
             `id`,
             `amount`,
-            `way`,
-            `create_time`
+            `buy_way`,
+            `state`,
+            `create_time`,
+            `tid`
         )
         VALUES
         <foreach collection="list" item="cm" index="index" separator=",">
             (
             #{cm.id},
             #{cm.amount},
-            #{cm.way},
-            #{cm.createTime}
+            #{cm.buyWay},
+            #{cm.state},
+            #{cm.createTime},
+            #{cm.tid}
             )
         </foreach>
     </insert>
@@ -118,14 +136,39 @@
             <if test="amount != null and amount != ''">
                  `amount`=#{amount},
             </if>
-            <if test="way != null and way != ''">
-                 `way`=#{way},
+            <if test="buyWay != null">
+                 `buy_way`=#{buyWay},
+            </if>
+            <if test="state != null">
+                 `state`=#{state},
             </if>
             <if test="createTime != null">
                  `create_time`=#{createTime},
             </if>
+            <if test="tid != null">
+                 `tid`=#{tid},
+            </if>
         </set>
         WHERE id=#{id}
+    </update>
+    <update id="updateByTid" parameterType="com.mp.blog.shopping.entity.RedPacket">
+        UPDATE
+        <include refid="table"/>
+        <set>
+            <if test="amount != null and amount != ''">
+                `amount`=#{amount},
+            </if>
+            <if test="buyWay != null">
+                `buy_way`=#{buyWay},
+            </if>
+            <if test="state != null">
+                `state`=#{state},
+            </if>
+            <if test="createTime != null">
+                `create_time`=#{createTime}
+            </if>
+        </set>
+        WHERE tid=#{tid}
     </update>
 
     <delete id="deleteById" parameterType="java.lang.Long">

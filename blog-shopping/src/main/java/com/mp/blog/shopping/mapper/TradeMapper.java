@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Administrator
- * @date 2020-07-18 15:18:26
+ * @date 2020-07-20 14:28:24
  **/
 @Mapper
 public interface TradeMapper extends BaseMapper<Trade,Long> {

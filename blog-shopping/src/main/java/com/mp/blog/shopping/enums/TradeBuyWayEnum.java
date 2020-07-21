@@ -17,10 +17,8 @@ public enum TradeBuyWayEnum   {
      */
     TB("淘宝", 0),
     JD("京东", 1),
-    TM("天猫", 2),
-    PDD("拼多多", 3),
-    TLP("淘礼品", 4),
-    OFFLINE("线下", 5);
+    PDD("拼多多", 2),
+    TLP("淘礼品", 3);
 
     private Integer code;
     private String desc;

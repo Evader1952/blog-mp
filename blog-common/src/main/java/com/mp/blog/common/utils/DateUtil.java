@@ -18,7 +18,7 @@ public class DateUtil {
     public static final String PATTERN_YYYY_MM_DD = "yyyy-MM-dd";
 
     public static final String PATTERN_YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
-
+    public static final String YYYY_MM_DD_HH_MM_SS="yyyy-MM-dd HH:mm:ss";
     public static String getDateStringFromToday(int days) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();

@@ -3,10 +3,13 @@ package com.mp.blog.api.controller.web;
 import com.mp.blog.common.common.Response;
 import com.mp.blog.common.utils.DataUtil;
 import com.mp.blog.shopping.entity.Trade;
+import com.mp.blog.shopping.enums.TradeBizTypeEnum;
+import com.mp.blog.shopping.enums.TradeTypeEnum;
 import com.mp.blog.shopping.query.TradeQuery;
 import com.mp.blog.shopping.service.TradeService;
 import com.mp.blog.shopping.vo.TradeWebList;
 import io.swagger.annotations.Api;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,23 +46,47 @@ public class TradeWebController {
             query.setLimit(10);
         }
         try {
-            return Response.ok( tradeService.findByPage(query));
+            return Response.ok(tradeService.findByPage(query));
         } catch (Exception e) {
             log.error("获取交易列表异常:{}", e);
             return Response.fail("查询失败");
         }
     }
 
+    /**
+     * 添加收支
+     * @param trade
+     * @param types
+     * @return
+     */
     @RequestMapping(value = "/add")
-    public Response<String> addTrade(Trade trade) {
+    public Response<String> addTrade(Trade trade, String types) {
         String check = trade.check();
-        if (check!=null){
-            return  Response.fail(check);
+        if (check != null) {
+            return Response.fail(check);
         }
-        Boolean flag = tradeService.addTrade(trade);
-        if (flag){
+        trade.setType( types.equals(TradeTypeEnum.INCOME.toDesc())? 0 : 1);
+        if (tradeService.addTrade(trade)) {
             return Response.ok("添加成功");
         }
         return Response.fail("添加失败");
     }
+
+    /**
+     * 结算
+     * @param redPackState
+     * @param state
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/settle")
+    public Response<String> settle(Integer redPackState, Integer state, Long id,Integer type) {
+
+        if (tradeService.settle(id, redPackState, state,type)) {
+            return Response.ok("操作成功");
+        }
+
+        return Response.fail("操作失败");
+    }
+
 }

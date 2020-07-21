@@ -15,11 +15,8 @@ public class TradeWebList {
     /**
      *商品名称
      */
-    private  String goodsName;
-    /**
-     *
-     */
-    private  Integer goodsType;
+    private  String title;
+
 
     private  String amount;
 
@@ -68,8 +65,12 @@ public class TradeWebList {
     private  Integer state;
 
     private  String stateDesc;
+
+    private  Integer redPackState;
+
+    private  String redPackStateDesc;
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
 }

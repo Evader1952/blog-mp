@@ -6,10 +6,13 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author Administrator
- * @date 2020-07-18 15:11:24
+ * @date 2020-07-20 14:28:35
  **/
 @Mapper
 public interface RedPacketMapper extends BaseMapper<RedPacket,Long> {
-
-
+    /**
+     * 根据订单号改
+     * @param redPacket
+     */
+    void updateByTid(RedPacket redPacket);
 }
