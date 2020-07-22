@@ -1,6 +1,8 @@
 package com.mp.blog.shopping.service;
 
 import com.mp.blog.common.service.BaseService;
+import com.mp.blog.shopping.dto.AmountData;
+import com.mp.blog.shopping.dto.AmountInOut;
 import com.mp.blog.shopping.entity.Trade;
 import com.mp.blog.shopping.query.TradeQuery;
 import com.mp.blog.shopping.vo.TradeWebList;
@@ -28,5 +30,21 @@ public interface TradeService extends BaseService<Trade,Long> {
      */
     Boolean addTrade(Trade trade);
 
+    /**
+     * 结算
+     * @param id
+     * @param redPackState
+     * @param state
+     * @param type
+     * @return
+     */
     Boolean settle(Long id, Integer redPackState, Integer state, Integer type);
+
+    /**
+     * 获取金额
+     * @return
+     */
+    AmountData getAmountData();
+
+    AmountInOut getAmountByTime(String startTime,String endTime);
 }

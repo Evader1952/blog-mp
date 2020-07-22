@@ -907,11 +907,82 @@ public class DateUtil {
         return time;
     }
 
-    public static void main(String[] args) throws ParseException {
-        //  System.err.println(addTime(new Date(),3, Calendar.YEAR));
-
-         String endTime = getStartOrEndTime("2020-06-05 11:11:11",0);
-        String startTime = getStartOrEndTime("2020-06-05 11:11:11",1);
-         System.out.println(endTime); System.out.println(startTime);
+    /**
+     * 获取今天
+     * @return String
+     * */
+    public static String getToday(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     }
+    /**
+     * 获取本月开始日期
+     * @return String
+     * **/
+    public static String getMonthStart(){
+        Calendar cal=Calendar.getInstance();
+        cal.add(Calendar.MONTH, 0);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date time=cal.getTime();
+        return new SimpleDateFormat("yyyy-MM-dd").format(time)+" 00：00：00";
+    }
+    /**
+     * 获取本月最后一天
+     * @return String
+     * **/
+    public static String getMonthEnd(){
+        Calendar cal=Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date time=cal.getTime();
+        return new SimpleDateFormat("yyyy-MM-dd").format(time)+" 23:59:59";
+    }
+    /**
+     * 获取本周的第一天
+     * @return String
+     * **/
+    public static String getWeekStart(){
+        Calendar cal=Calendar.getInstance();
+        cal.add(Calendar.WEEK_OF_MONTH, 0);
+        cal.set(Calendar.DAY_OF_WEEK, 2);
+        Date time=cal.getTime();
+        return new SimpleDateFormat("yyyy-MM-dd").format(time)+" 00:00:00";
+    }
+    /**
+     * 获取本周的最后一天
+     * @return String
+     * **/
+    public static String getWeekEnd(){
+        Calendar cal=Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, cal.getActualMaximum(Calendar.DAY_OF_WEEK));
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        Date time=cal.getTime();
+        return new SimpleDateFormat("yyyy-MM-dd").format(time)+" 23:59:59";
+    }
+    /**
+     * 获取本年的第一天
+     * @return String
+     * **/
+    public static String getYearStart(){
+        return new SimpleDateFormat("yyyy").format(new Date())+"-01-01";
+    }
+
+    /**
+     * 获取本年的最后一天
+     * @return String
+     * **/
+    public static String getYearEnd(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH,calendar.getActualMaximum(Calendar.MONTH));
+        calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date currYearLast = calendar.getTime();
+        return new SimpleDateFormat("yyyy-MM-dd").format(currYearLast)+" 23:59:59";
+    }
+        public static void main(String[] args) throws ParseException {
+            System.out.println(DateUtil.getToday());
+            System.out.println(DateUtil.getWeekStart());
+            System.out.println(DateUtil.getWeekEnd());
+            System.out.println(DateUtil.getMonthStart());
+            System.out.println(DateUtil.getMonthEnd());
+            System.out.println(DateUtil.getYearStart());
+            System.out.println(DateUtil.getYearEnd());
+        }
 }

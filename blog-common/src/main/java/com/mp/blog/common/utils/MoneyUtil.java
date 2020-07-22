@@ -474,49 +474,12 @@ public class MoneyUtil {
     }
 
     public static void main(String[] args) {
-        CalculateRepaymentDetail detail = MoneyUtil.calculateRepayment(
-                "1000",
-                "1000",
-                24,
-                "0.23",
-                0,
-                "02",
-                null
-        );
-        CalculateRepaymentDetail detail2 = MoneyUtil.calculateRepayment(
-                "1000",
-                "1000",
-                24,
-                "0.23",
-                0,
-                "01",
-                "50.43"
-        );
+        String s="-1";
+        String s1 = s.replaceAll("-", "");
 
-
-        CalculateRepaymentDetail detail3 = MoneyUtil.calculateRepayment(
-                "1130",
-                "1000",
-                24,
-                "0.13",
-                1,
-                "02",
-                null
-        );
-        CalculateRepaymentDetail detail4 = MoneyUtil.calculateRepayment(
-                "1130",
-                "1000",
-                24,
-                "0.13",
-                1,
-                "01",
-                "47"
-        );
-        System.out.println(detail);
-        System.out.println(detail2);
-        System.out.println("----------------------------");
-        System.out.println(detail3);
-        System.out.println(detail4);
+        System.out.println(s1);
+        String add = MoneyUtil.add("-1", "-2");
+        System.out.println(add);
     }
 
 }

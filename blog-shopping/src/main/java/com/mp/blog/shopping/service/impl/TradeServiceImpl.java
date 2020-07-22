@@ -5,6 +5,8 @@ import com.mp.blog.common.utils.*;
 import com.mp.blog.common.dao.mybatis.BaseMapper;
 import com.mp.blog.common.service.impl.BaseMybatisServiceImpl;
 
+import com.mp.blog.shopping.dto.AmountData;
+import com.mp.blog.shopping.dto.AmountInOut;
 import com.mp.blog.shopping.entity.RedPacket;
 import com.mp.blog.shopping.entity.Trade;
 import com.mp.blog.shopping.enums.*;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,11 +70,13 @@ public class TradeServiceImpl extends BaseMybatisServiceImpl<Trade, Long> implem
         RedPacket redPacket = new RedPacket();
         try {
             if (TradeBizTypeEnum.SWIPE.toCode().equals(trade.getBizType())) {
-                rebateAmount=  TradeBuyWayEnum.TLP.toCode().equals(trade.getBuyWay())?MoneyUtil.subtract(trade.getAmount(), trade.getPaymentAmount()):trade.getRebateAmount();
+                rebateAmount = TradeBuyWayEnum.TLP.toCode().equals(trade.getBuyWay()) ? MoneyUtil.subtract(trade.getAmount(), trade.getPaymentAmount()) : trade.getRebateAmount();
                 trade.setRebateAmount(rebateAmount);
                 trade.setRedPackState(0);
                 trade.setState(0);
                 redPacket = RedPacket.builder().amount(rebateAmount).buyWay(trade.getBuyWay()).createTime(date).state(0).build();
+            }else {
+                trade.setPaymentAmount(trade.getAmount());
             }
             if (trade.getType().equals(TradeTypeEnum.EXPENSES.toCode())) {
                 trade.setAmount("-" + trade.getAmount());
@@ -95,15 +100,68 @@ public class TradeServiceImpl extends BaseMybatisServiceImpl<Trade, Long> implem
     @Override
     public Boolean settle(Long id, Integer redPackState, Integer state, Integer type) {
         try {
-            this.updateById(Trade.builder().id(id).redPackState(redPackState).state(state).build());
             if (type.equals(0)) {
                 redPacketService.updateByTid(RedPacket.builder().tid(id).state(RedPacketStateEnum.SWIPE.toCode()).build());
+                return true;
             }
+            this.updateById(Trade.builder().id(id).redPackState(redPackState).state(state).build());
+
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    @Override
+    public AmountData getAmountData() {
+        String today = DateUtil.getToday();
+        AmountInOut dayAmount = getAmount(getList(DateUtil.getStartOrEndTime(today, 0), DateUtil.getStartOrEndTime(today, 1)));
+        AmountInOut weekAmount = getAmount(getList(DateUtil.getWeekStart(), DateUtil.getWeekEnd()));
+        AmountInOut monthAmount = getAmount(getList(DateUtil.getMonthStart(), DateUtil.getMonthEnd()));
+        AmountInOut yearAmount = getAmount(getList(DateUtil.getYearStart(), DateUtil.getYearEnd()));
+        AmountInOut allAmount = getAmount(getList(null, null));
+
+        return AmountData.builder().dayInAmount(dayAmount.getInAmount()).dayOutAmount(dayAmount.getOutAmount())
+                .weekInAmount(weekAmount.getInAmount()).weekOutAmount(weekAmount.getOutAmount())
+                .monthInAmount(monthAmount.getInAmount()).monthOutAmount(monthAmount.getOutAmount())
+                .yearInAmount(yearAmount.getInAmount()).yearOutAmount(yearAmount.getOutAmount())
+                .allInAmount(allAmount.getInAmount()).allOutAmount(allAmount.getOutAmount())
+                .build();
+
+    }
+
+    @Override
+    public AmountInOut getAmountByTime(String startTime, String endTime) {
+        return getAmount(getList(startTime, endTime));
+    }
+
+    private List<Trade> getList(String startTime, String endTime) {
+        RequestContext.RequestUser currentUser = RequestContext.getCurrentUser();
+        TradeQuery query = new TradeQuery();
+        query.setStartTime(startTime);
+        query.setEndTime(endTime);
+        query.setUid(currentUser.getId());
+        List<Trade> list = this.queryList(query);
+        return list;
+    }
+
+    private AmountInOut getAmount(List<Trade> list) {
+        String inAmount = "0";
+        String outAmount = "0";
+        for (Trade trade : list) {
+            if (TradeTypeEnum.EXPENSES.toCode().equals(trade.getType())) {
+                if (TradeStateEnum.REBATE.toCode().equals(trade.getState())) {
+                    inAmount=MoneyUtil.add(trade.getAmount().replaceAll("-", ""),inAmount );
+                }
+                outAmount = MoneyUtil.add(trade.getPaymentAmount(), outAmount);
+                continue;
+            } else {
+                inAmount = MoneyUtil.add(trade.getAmount(), inAmount);
+            }
+        }
+        return AmountInOut.builder().inAmount(inAmount).outAmount(outAmount).build();
     }
 
     private TradeWebList getListVo(Trade trade) {
