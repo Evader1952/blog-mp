@@ -1,8 +1,8 @@
 spring:
   datasource:
     username: root
-    password: duchong5262
-    url: jdbc:mysql://121.196.57.4:33306/pay?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
+    password: root123.
+    url: jdbc:mysql://111.229.120.58/blog-mp?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -26,16 +26,16 @@ spring:
       stat-view-servlet:
         url-pattern: '/druid/*'
         reset-enable: false
-        login-username: dcpay
-        login-password: dcpay666
+        login-username: root
+        login-password: root
         enabled: true
       filter:
         stat:
           slow-sql-millis: 5000
   redis:
-    host: 121.196.57.4
-    port: 36379
-    password: duchong5262
+    host: 49.233.192.222
+    port: 6379
+    password: 13545630179qq.
     timeout: 3000ms
     database: 6
     lettuce:
@@ -46,16 +46,38 @@ spring:
         max-active: 200
 
 activemq: #MQ消息中间件
-  broker-url: failover:(tcp://121.196.57.4:31616)
-  user: admin
-  password: duchong5262
+  broker-url: failover:(tcp://111.229.120.58:61617)
+  user:
+  password:
   enabled: true
   max-connections: 50
   expiry-timeout: 10000
   idle-timeout: 30000
 
-#H5页面和后台地址
+#后台页面地址
 server:
   api: http://127.0.0.1:8088
 
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+h5:
+  key: 12345678qwertyui
+
+
+
+excelDownloadUrl: http://127.0.0.1:8888/api/open/downloadExcel/
+zipDownloadUrl: http://127.0.0.1:8888/api/open/downloadZip/
+
+
+
+#文件下载存放路径
+serverPath: C:\\excel\\
+
+sms:
+  gms:
+    url: http://gmsgateway
+    orgid: 12345
+    username: 12345
+    password: 12345678
